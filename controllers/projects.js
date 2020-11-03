@@ -1,5 +1,6 @@
 let express = require('express')
 let db = require('../models')
+const category = require('../models/category')
 let router = express.Router()
 
 // POST /projects - create a new project
@@ -11,11 +12,24 @@ router.post('/', (req, res) => {
     description: req.body.description
   })
   .then((project) => {
-    res.redirect('/')
+    console.log(project.id)
+    db.category.findOrCreate({
+      where: {
+        name: req.body.category
+      }
+    })
+    .then(([category, wasCreated]) => {
+      project.addCategory(category)
+      .then(()=>{
+        res.redirect('/projects/'+project.id)
+      })
+    })
+    
   })
-  .catch((error) => {
+  .catch((error)=>{
     res.status(400).render('main/404')
   })
+  
 })
 
 // GET /projects/new - display form for creating a new project
@@ -30,7 +44,15 @@ router.get('/:id', (req, res) => {
   })
   .then((project) => {
     if (!project) throw Error()
-    res.render('projects/show', { project: project })
+    project.getCategories()
+    .then((cat)=>{
+      let cats=[]
+      cat.forEach((cate)=>{
+        cats.push(cate.dataValues.name)
+      })
+      res.render('projects/show', { project: project, cats: cats })
+    })
+    
   })
   .catch((error) => {
     res.status(400).render('main/404')

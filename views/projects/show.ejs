@@ -11,7 +11,12 @@
 </a>
 
 <p><%= project.description %></p>
-
+<p>Categories:</p>
+<ul>
+  <% cats.forEach((cat)=>{%>
+    <li><%= cat %></li>
+  <%})%>
+</ul>
 <hr />
 
 <a href="/">&larr; Back Home</a>

@@ -8,6 +8,19 @@ var async = require('async')
 //   console.log(category.get())
 // })
 
+// db.project.findOne({
+//   where: { id: 1 },
+//   include: [db.category]
+// }).then(function(project) {
+//   // by using eager loading, the project model should have a categories key
+//   console.log(project.categories)
+
+//   // addCategory function should be available to this model
+//   project.addCategory({ name: 'node' }).then(function(category) {
+//     console.log(category.id)
+//   })
+// })
+
 // Create a project and use the helper function create<ModelName> to create a category
 // Requires categoriesProjects to exist, be migrated, and properly associated
 
@@ -25,7 +38,7 @@ db.project.create({
     db.category.findOrCreate({
       where: { name: cat }
     })
-    .spread((category, wasCreated) => {
+    .then(([category, wasCreated]) => {
       project.addCategory(category)
       .then(() => {
         // res.redirect, or whatevs
@@ -36,23 +49,23 @@ db.project.create({
   }, () => {
     console.log('EVERYTHING is done. Now redirect or something')
   })
-
-
-
-
-
-  // TIMING DOESNOT WORK
-  // cats.forEach((cat) => {
-  //   db.category.findOrCreate({
-  //     where: { name: cat }
-  //   })
-  //   .spread((category, wasCreated) => {
-  //     project.addCategory(category)
-  //     .then(() => {
-  //       // res.redirect, or whatevs
-  //       console.log('done adding', cat)
-  //     })
-  //   })
-  // })
-  // console.log('redirect or something')
 })
+
+
+
+
+//   //TIMING DOESNOT WORK
+//   cats.forEach((cat) => {
+//     db.category.findOrCreate({
+//       where: { name: cat }
+//     })
+//     .spread((category, wasCreated) => {
+//       project.addCategory(category)
+//       .then(() => {
+//         // res.redirect, or whatevs
+//         console.log('done adding', cat)
+//       })
+//     })
+//   })
+//   console.log('redirect or something')
+// })

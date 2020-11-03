@@ -1,0 +1,16 @@
+<h1>Project Organizer</h1>
+
+<h2>Categories</h2>
+<hr>
+
+<% if (categories < 1) { %>
+  <h4>No Categories Added</h4>
+<% } %>
+
+<% categories.forEach(function(category) { %>
+  <div class="well">
+    <h2>
+      <a href="/categories/<%= category.id %>"><%= category.name %></a>
+    </h2>
+  </div>
+<% }); %>

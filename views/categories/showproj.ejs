@@ -1,0 +1,13 @@
+<h1>Project Organizer</h1>
+
+<h2>Projects that use <%=category.name%></h2>
+<hr>
+
+
+<% projs.forEach(function(proj) { %>
+  <div class="well">
+    <h2>
+      <a href="/projects/<%= proj.id %>"><%= proj.name %></a>
+    </h2>
+  </div>
+<% }); %>
